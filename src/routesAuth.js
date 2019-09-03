@@ -17,6 +17,7 @@ routesAuth.get("/usuario", UsuarioController.index);
 const DashboardController = require("./controllers/DashboardController");
 routesAuth.get("/buscaultimo", DashboardController.BuscaUltimo);
 routesAuth.get("/chuvadia", DashboardController.ChuvaDia);
+routesAuth.get("/chuvahora/:datachuva", DashboardController.ChuvaHora);
 routesAuth.get("/graficosemana", DashboardController.GraficoSemana);
 
 module.exports = routesAuth;
