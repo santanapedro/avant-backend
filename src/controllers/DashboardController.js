@@ -477,63 +477,9 @@ class DashboardController {
         }
       ];
 
-      // ========================================  TEMPERATURA MINIMA ===========================================
+      // ========================================  TEMPERATURA MAXIMA ===========================================
 
-      for (let i = 20; i < 24; i++) {
-        leitura = await Leitura.findOne({
-          data: {
-            $gte: moment(data2).format(`YYYY-MM-DDT${i}:00:00.000-04:00`),
-            $lte: moment(data2).format(`YYYY-MM-DDT${i}:59:59.000-04:00`)
-          }
-        }).sort({ temperatura: -1 });
-
-        if (leitura) {
-          datasets[0].data.push(parseFloat(leitura.temperatura).toFixed(2));
-        } else {
-          datasets[0].data.push(0);
-        }
-      }
-
-      for (let i = 0; i < 20; i++) {
-        if (i < 10) {
-          leitura = await Leitura.findOne({
-            data: {
-              $gte: moment(data).format(`YYYY-MM-DDT0${i}:00:00.000-04:00`),
-              $lte: moment(data).format(`YYYY-MM-DDT0${i}:59:59.000-04:00`)
-            }
-          }).sort({ temperatura: -1 });
-        } else {
-          leitura = await Leitura.findOne({
-            data: {
-              $gte: moment(data).format(`YYYY-MM-DDT${i}:00:00.000-04:00`),
-              $lte: moment(data).format(`YYYY-MM-DDT${i}:59:59.000-04:00`)
-            }
-          }).sort({ temperatura: -1 });
-        }
-
-        if (leitura) {
-          datasets[0].data.push(parseFloat(leitura.temperatura).toFixed(2));
-        } else {
-          datasets[0].data.push(0);
-        }
-      }
-
-      for (let i = 20; i < 24; i++) {
-        leitura = await Leitura.findOne({
-          data: {
-            $gte: moment(data2).format(`YYYY-MM-DDT${i}:00:00.000-04:00`),
-            $lte: moment(data2).format(`YYYY-MM-DDT${i}:59:59.000-04:00`)
-          }
-        }).sort({ temperatura: -1 });
-
-        if (leitura) {
-          datasets[0].data.push(parseFloat(leitura.temperatura).toFixed(2));
-        } else {
-          datasets[0].data.push(0);
-        }
-      }
-
-      for (let i = 0; i < 20; i++) {
+      for (let i = 0; i < 24; i++) {
         if (i < 10) {
           leitura = await Leitura.findOne({
             data: {
