@@ -360,10 +360,6 @@ class DashboardController {
 
   async GraficoHora(req, res) {
     var data = req.params.data;
-    var data2 = moment(data)
-      .subtract(1, "days")
-      .format();
-
     var leitura;
 
     try {
@@ -505,22 +501,7 @@ class DashboardController {
 
       // ========================================  TEMPERATURA MINIMA ===========================================
 
-      for (let i = 20; i < 24; i++) {
-        leitura = await Leitura.findOne({
-          data: {
-            $gte: moment(data2).format(`YYYY-MM-DDT${i}:00:00.000-04:00`),
-            $lte: moment(data2).format(`YYYY-MM-DDT${i}:59:59.000-04:00`)
-          }
-        }).sort({ temperatura: 1 });
-
-        if (leitura) {
-          datasets[1].data.push(parseFloat(leitura.temperatura).toFixed(2));
-        } else {
-          datasets[1].data.push(0);
-        }
-      }
-
-      for (let i = 0; i < 20; i++) {
+      for (let i = 0; i < 24; i++) {
         if (i < 10) {
           leitura = await Leitura.findOne({
             data: {
@@ -546,22 +527,7 @@ class DashboardController {
 
       // ========================================  UMIDADE MAXIMA ===========================================
 
-      for (let i = 20; i < 24; i++) {
-        leitura = await Leitura.findOne({
-          data: {
-            $gte: moment(data2).format(`YYYY-MM-DDT${i}:00:00.000-04:00`),
-            $lte: moment(data2).format(`YYYY-MM-DDT${i}:59:59.000-04:00`)
-          }
-        }).sort({ umidade: -1 });
-
-        if (leitura) {
-          datasets[2].data.push(parseFloat(leitura.umidade).toFixed(2));
-        } else {
-          datasets[2].data.push(0);
-        }
-      }
-
-      for (let i = 0; i < 20; i++) {
+      for (let i = 0; i < 24; i++) {
         if (i < 10) {
           leitura = await Leitura.findOne({
             data: {
@@ -587,22 +553,7 @@ class DashboardController {
 
       // ========================================  UMIDADE MINIMA ===========================================
 
-      for (let i = 20; i < 24; i++) {
-        leitura = await Leitura.findOne({
-          data: {
-            $gte: moment(data2).format(`YYYY-MM-DDT${i}:00:00.000-04:00`),
-            $lte: moment(data2).format(`YYYY-MM-DDT${i}:59:59.000-04:00`)
-          }
-        }).sort({ umidade: 1 });
-
-        if (leitura) {
-          datasets[3].data.push(parseFloat(leitura.umidade).toFixed(2));
-        } else {
-          datasets[3].data.push(0);
-        }
-      }
-
-      for (let i = 0; i < 20; i++) {
+      for (let i = 0; i < 24; i++) {
         if (i < 10) {
           leitura = await Leitura.findOne({
             data: {
