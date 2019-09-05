@@ -2,6 +2,7 @@ const Leitura = require("../models/Leitura");
 const Chuva = require("../models/Chuva");
 
 const moment = require("moment");
+const timeZone = require("moment-timezone");
 
 class DashboardController {
   //==================================================================================================
@@ -104,9 +105,6 @@ class DashboardController {
           borderWidth: 1
         }
       ];
-
-      const dia = moment(req.params.datachuva).format();
-      console.log(moment(req.params.datachuva, "DD-MM-YYYY").format());
 
       const chuva = await Chuva.find({
         data: {
@@ -344,6 +342,339 @@ class DashboardController {
 
         if (UmidadeMinima) {
           datasets[3].data.push(parseFloat(UmidadeMinima.umidade).toFixed(2));
+        } else {
+          datasets[3].data.push(0);
+        }
+      }
+
+      var dataBar = { labels, datasets };
+
+      return res.status(200).json(dataBar);
+    } catch (err) {
+      console.log(err);
+      return res.send(err);
+    }
+  }
+
+  //==================================================================================================
+
+  async GraficoHora(req, res) {
+    try {
+      var labels = [
+        "00",
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
+        "06",
+        "07",
+        "08",
+        "09",
+        "10",
+        "11",
+        "12",
+        "13",
+        "14",
+        "15",
+        "16",
+        "17",
+        "18",
+        "19",
+        "20",
+        "21",
+        "22",
+        "23"
+      ];
+
+      var datasets = [
+        {
+          label: "TEMP MAXIMA",
+          data: [],
+          backgroundColor: "rgba(245, 74, 85, 0.0)",
+          borderColor: "rgba(245, 74, 85,1)",
+          borderCapStyle: "butt",
+          borderDash: [],
+          borderDashOffset: 0.0,
+          borderJoinStyle: "miter",
+          pointBorderColor: "rgba(245, 74, 85,1)",
+          pointBackgroundColor: "#fff",
+          pointBorderWidth: 3,
+          pointHoverRadius: 5,
+          pointHoverBackgroundColor: "rgba(245, 74, 85,1)",
+          pointHoverBorderColor: "rgba(220,220,220,1)",
+          pointHoverBorderWidth: 2,
+          pointRadius: 1,
+          pointHitRadius: 10,
+          borderWidth: 3
+        },
+        {
+          label: "TEMP MINIMA",
+          data: [],
+          backgroundColor: "rgba(245, 74, 85, 0.0)",
+          borderColor: "rgba(245, 74, 85,0.5)",
+          borderCapStyle: "butt",
+          borderDash: [],
+          borderDashOffset: 0.0,
+          borderJoinStyle: "miter",
+          pointBorderColor: "rgba(245, 74, 85,0.5)",
+          pointBackgroundColor: "#fff",
+          pointBorderWidth: 3,
+          pointHoverRadius: 5,
+          pointHoverBackgroundColor: "rgba(245, 74, 85,0.5)",
+          pointHoverBorderColor: "rgba(220,220,220,1)",
+          pointHoverBorderWidth: 2,
+          pointRadius: 1,
+          pointHitRadius: 10,
+          borderWidth: 2
+        },
+        {
+          label: "UMIDADE MAXIMA",
+          data: [],
+          backgroundColor: "rgba(245, 74, 85, 0.0)",
+          borderColor: "rgba(90, 173, 246, 1)",
+          borderCapStyle: "butt",
+          borderDash: [],
+          borderDashOffset: 0.0,
+          borderJoinStyle: "miter",
+          pointBorderColor: "rgba(90, 173, 246, 1)",
+          pointBackgroundColor: "#fff",
+          pointBorderWidth: 3,
+          pointHoverRadius: 5,
+          pointHoverBackgroundColor: "rgba(90, 173, 246, 1)",
+          pointHoverBorderColor: "rgba(220,220,220,1)",
+          pointHoverBorderWidth: 2,
+          pointRadius: 1,
+          pointHitRadius: 10,
+          borderWidth: 3
+        },
+        {
+          label: "TEMP MINIMA",
+          data: [],
+          backgroundColor: "rgba(245, 74, 85, 0.0)",
+          borderColor: "rgba(90, 173, 246, 0.5)",
+          borderCapStyle: "butt",
+          borderDash: [],
+          borderDashOffset: 0.0,
+          borderJoinStyle: "miter",
+          pointBorderColor: "rgba(90, 173, 246, 0.5)",
+          pointBackgroundColor: "#fff",
+          pointBorderWidth: 3,
+          pointHoverRadius: 5,
+          pointHoverBackgroundColor: "rgba(90, 173, 246, 0.5)",
+          pointHoverBorderColor: "rgba(220,220,220,1)",
+          pointHoverBorderWidth: 2,
+          pointRadius: 1,
+          pointHitRadius: 10,
+          borderWidth: 2
+        }
+      ];
+
+      var data = "2019-09-03";
+      var data2 = moment(data)
+        .subtract(1, "days")
+        .format();
+
+      var leitura;
+
+      // ========================================  TEMPERATURA MINIMA ===========================================
+
+      for (let i = 20; i < 24; i++) {
+        leitura = await Leitura.findOne({
+          data: {
+            $gte: moment(data2).format(`YYYY-MM-DDT${i}:00:00.000-04:00`),
+            $lte: moment(data2).format(`YYYY-MM-DDT${i}:59:59.000-04:00`)
+          }
+        }).sort({ temperatura: -1 });
+
+        if (leitura) {
+          datasets[0].data.push(parseFloat(leitura.temperatura).toFixed(2));
+        } else {
+          datasets[0].data.push(0);
+        }
+      }
+
+      for (let i = 0; i < 20; i++) {
+        if (i < 10) {
+          leitura = await Leitura.findOne({
+            data: {
+              $gte: moment(data).format(`YYYY-MM-DDT0${i}:00:00.000-04:00`),
+              $lte: moment(data).format(`YYYY-MM-DDT0${i}:59:59.000-04:00`)
+            }
+          }).sort({ temperatura: -1 });
+        } else {
+          leitura = await Leitura.findOne({
+            data: {
+              $gte: moment(data).format(`YYYY-MM-DDT${i}:00:00.000-04:00`),
+              $lte: moment(data).format(`YYYY-MM-DDT${i}:59:59.000-04:00`)
+            }
+          }).sort({ temperatura: -1 });
+        }
+
+        if (leitura) {
+          datasets[0].data.push(parseFloat(leitura.temperatura).toFixed(2));
+        } else {
+          datasets[0].data.push(0);
+        }
+      }
+
+      for (let i = 20; i < 24; i++) {
+        leitura = await Leitura.findOne({
+          data: {
+            $gte: moment(data2).format(`YYYY-MM-DDT${i}:00:00.000-04:00`),
+            $lte: moment(data2).format(`YYYY-MM-DDT${i}:59:59.000-04:00`)
+          }
+        }).sort({ temperatura: -1 });
+
+        if (leitura) {
+          datasets[0].data.push(parseFloat(leitura.temperatura).toFixed(2));
+        } else {
+          datasets[0].data.push(0);
+        }
+      }
+
+      for (let i = 0; i < 20; i++) {
+        if (i < 10) {
+          leitura = await Leitura.findOne({
+            data: {
+              $gte: moment(data).format(`YYYY-MM-DDT0${i}:00:00.000-04:00`),
+              $lte: moment(data).format(`YYYY-MM-DDT0${i}:59:59.000-04:00`)
+            }
+          }).sort({ temperatura: -1 });
+        } else {
+          leitura = await Leitura.findOne({
+            data: {
+              $gte: moment(data).format(`YYYY-MM-DDT${i}:00:00.000-04:00`),
+              $lte: moment(data).format(`YYYY-MM-DDT${i}:59:59.000-04:00`)
+            }
+          }).sort({ temperatura: -1 });
+        }
+
+        if (leitura) {
+          datasets[0].data.push(parseFloat(leitura.temperatura).toFixed(2));
+        } else {
+          datasets[0].data.push(0);
+        }
+      }
+
+      // ========================================  TEMPERATURA MINIMA ===========================================
+
+      for (let i = 20; i < 24; i++) {
+        leitura = await Leitura.findOne({
+          data: {
+            $gte: moment(data2).format(`YYYY-MM-DDT${i}:00:00.000-04:00`),
+            $lte: moment(data2).format(`YYYY-MM-DDT${i}:59:59.000-04:00`)
+          }
+        }).sort({ temperatura: 1 });
+
+        if (leitura) {
+          datasets[1].data.push(parseFloat(leitura.temperatura).toFixed(2));
+        } else {
+          datasets[1].data.push(0);
+        }
+      }
+
+      for (let i = 0; i < 20; i++) {
+        if (i < 10) {
+          leitura = await Leitura.findOne({
+            data: {
+              $gte: moment(data).format(`YYYY-MM-DDT0${i}:00:00.000-04:00`),
+              $lte: moment(data).format(`YYYY-MM-DDT0${i}:59:59.000-04:00`)
+            }
+          }).sort({ temperatura: 1 });
+        } else {
+          leitura = await Leitura.findOne({
+            data: {
+              $gte: moment(data).format(`YYYY-MM-DDT${i}:00:00.000-04:00`),
+              $lte: moment(data).format(`YYYY-MM-DDT${i}:59:59.000-04:00`)
+            }
+          }).sort({ temperatura: 1 });
+        }
+
+        if (leitura) {
+          datasets[1].data.push(parseFloat(leitura.temperatura).toFixed(2));
+        } else {
+          datasets[1].data.push(0);
+        }
+      }
+
+      // ========================================  UMIDADE MAXIMA ===========================================
+
+      for (let i = 20; i < 24; i++) {
+        leitura = await Leitura.findOne({
+          data: {
+            $gte: moment(data2).format(`YYYY-MM-DDT${i}:00:00.000-04:00`),
+            $lte: moment(data2).format(`YYYY-MM-DDT${i}:59:59.000-04:00`)
+          }
+        }).sort({ umidade: -1 });
+
+        if (leitura) {
+          datasets[2].data.push(parseFloat(leitura.umidade).toFixed(2));
+        } else {
+          datasets[2].data.push(0);
+        }
+      }
+
+      for (let i = 0; i < 20; i++) {
+        if (i < 10) {
+          leitura = await Leitura.findOne({
+            data: {
+              $gte: moment(data).format(`YYYY-MM-DDT0${i}:00:00.000-04:00`),
+              $lte: moment(data).format(`YYYY-MM-DDT0${i}:59:59.000-04:00`)
+            }
+          }).sort({ umidade: -1 });
+        } else {
+          leitura = await Leitura.findOne({
+            data: {
+              $gte: moment(data).format(`YYYY-MM-DDT${i}:00:00.000-04:00`),
+              $lte: moment(data).format(`YYYY-MM-DDT${i}:59:59.000-04:00`)
+            }
+          }).sort({ umidade: -1 });
+        }
+
+        if (leitura) {
+          datasets[2].data.push(parseFloat(leitura.umidade).toFixed(2));
+        } else {
+          datasets[2].data.push(0);
+        }
+      }
+
+      // ========================================  UMIDADE MINIMA ===========================================
+
+      for (let i = 20; i < 24; i++) {
+        leitura = await Leitura.findOne({
+          data: {
+            $gte: moment(data2).format(`YYYY-MM-DDT${i}:00:00.000-04:00`),
+            $lte: moment(data2).format(`YYYY-MM-DDT${i}:59:59.000-04:00`)
+          }
+        }).sort({ umidade: 1 });
+
+        if (leitura) {
+          datasets[3].data.push(parseFloat(leitura.umidade).toFixed(2));
+        } else {
+          datasets[3].data.push(0);
+        }
+      }
+
+      for (let i = 0; i < 20; i++) {
+        if (i < 10) {
+          leitura = await Leitura.findOne({
+            data: {
+              $gte: moment(data).format(`YYYY-MM-DDT0${i}:00:00.000-04:00`),
+              $lte: moment(data).format(`YYYY-MM-DDT0${i}:59:59.000-04:00`)
+            }
+          }).sort({ umidade: 1 });
+        } else {
+          leitura = await Leitura.findOne({
+            data: {
+              $gte: moment(data).format(`YYYY-MM-DDT${i}:00:00.000-04:00`),
+              $lte: moment(data).format(`YYYY-MM-DDT${i}:59:59.000-04:00`)
+            }
+          }).sort({ umidade: 1 });
+        }
+
+        if (leitura) {
+          datasets[3].data.push(parseFloat(leitura.umidade).toFixed(2));
         } else {
           datasets[3].data.push(0);
         }
