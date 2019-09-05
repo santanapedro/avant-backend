@@ -19,6 +19,6 @@ routesAuth.get("/buscaultimo", DashboardController.BuscaUltimo);
 routesAuth.get("/chuvadia", DashboardController.ChuvaDia);
 routesAuth.get("/chuvahora/:datachuva", DashboardController.ChuvaHora);
 routesAuth.get("/graficosemana", DashboardController.GraficoSemana);
-routesAuth.get("/graficohora", DashboardController.GraficoHora);
+routesAuth.get("/graficohora/:data", DashboardController.GraficoHora);
 
 module.exports = routesAuth;

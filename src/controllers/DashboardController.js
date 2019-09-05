@@ -359,6 +359,13 @@ class DashboardController {
   //==================================================================================================
 
   async GraficoHora(req, res) {
+    var data = req.params.data;
+    var data2 = moment(data)
+      .subtract(1, "days")
+      .format();
+
+    var leitura;
+
     try {
       var labels = [
         "00",
@@ -469,13 +476,6 @@ class DashboardController {
           borderWidth: 2
         }
       ];
-
-      var data = "2019-09-03";
-      var data2 = moment(data)
-        .subtract(1, "days")
-        .format();
-
-      var leitura;
 
       // ========================================  TEMPERATURA MINIMA ===========================================
 
