@@ -429,7 +429,7 @@ class DashboardController {
           borderWidth: 2
         },
         {
-          label: "UMIDADE MAXIMA",
+          label: "UMID MAXIMA",
           data: [],
           backgroundColor: "rgba(245, 74, 85, 0.0)",
           borderColor: "rgba(90, 173, 246, 1)",
@@ -449,7 +449,7 @@ class DashboardController {
           borderWidth: 3
         },
         {
-          label: "TEMP MINIMA",
+          label: "UMID MINIMA",
           data: [],
           backgroundColor: "rgba(245, 74, 85, 0.0)",
           borderColor: "rgba(90, 173, 246, 0.5)",
