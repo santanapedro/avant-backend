@@ -17,6 +17,14 @@ module.exports = {
     if (!(await bcrypt.compare(senha, usuario.senha)))
       return res.status(201).send({ msg: "Senha invalida!" });
 
+    if (usuario.status === "I")
+      return res.status(201).send({ msg: "Usuario Inativo" });
+
+    if (usuario.status === "P")
+      return res
+        .status(201)
+        .send({ msg: "Confirmação de conta via e-mail não realizada!" });
+
     usuario.senha = undefined;
 
     const token = jwt.sign({ id: usuario.id }, authConfig.secret, {

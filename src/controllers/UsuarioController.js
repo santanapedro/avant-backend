@@ -15,7 +15,7 @@ const transporter = nodemailer.createTransport({
   tls: { rejectUnauthorized: false }
 });
 
-const url = "http://192.168.15.15:3333";
+const url = "https://avant-backend.herokuapp.com";
 
 class UsuarioController {
   //==========================================================================================================
@@ -38,7 +38,7 @@ class UsuarioController {
         return res.status(200)
           .send(`<html><body><header><h1> <font color="#588c7e">AVANT TECNOLOGIA </font></h1></header>\
         <div class="w3-container">\
-          <p><strong>${response.nome}</strong>, esta conta ja está INATIVA, contate o administrador do sistema!.</p>\
+          <p><strong>${response.nome}</strong>, esta conta ja está INATIVA, contate o administrador do sistema! (PEDRO - (65) 9 9639-3517).</p>\
         </div></body></html>`);
       }
 
@@ -81,7 +81,7 @@ class UsuarioController {
               <div class="w3-container">\
               <p><strong>${userFromDB.nome}</strong>, digite sua nova senha!.</p>\
               </div>
-                <form action="http://192.168.15.15:3333/senha/${userFromDB._id}" method="post">
+                <form action="https://avant-backend.herokuapp.com/senha/${userFromDB._id}" method="post">
                
                   <div> 
                 <label for="name">Senha:</label>
