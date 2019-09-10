@@ -586,6 +586,92 @@ class DashboardController {
     }
   }
 
+  async maximasDia(req, res) {
+    try {
+      const date = req.params.data;
+
+      const TemperaturaMaxima = await Leitura.findOne({
+        data: {
+          $gte: new Date(moment(date, "YYYY-MM-DD").format()).setHours(
+            0,
+            0,
+            0,
+            0
+          ),
+          $lt: new Date(moment(date, "YYYY-MM-DD").format()).setHours(
+            23,
+            59,
+            59,
+            99
+          )
+        }
+      }).sort({ temperatura: -1 });
+
+      const TemperaturaMinima = await Leitura.findOne({
+        data: {
+          $gte: new Date(moment(date, "YYYY-MM-DD").format()).setHours(
+            0,
+            0,
+            0,
+            0
+          ),
+          $lt: new Date(moment(date, "YYYY-MM-DD").format()).setHours(
+            23,
+            59,
+            59,
+            99
+          )
+        }
+      }).sort({ temperatura: 1 });
+
+      const UmidadeMaxima = await Leitura.findOne({
+        data: {
+          $gte: new Date(moment(date, "YYYY-MM-DD").format()).setHours(
+            0,
+            0,
+            0,
+            0
+          ),
+          $lt: new Date(moment(date, "YYYY-MM-DD").format()).setHours(
+            23,
+            59,
+            59,
+            99
+          )
+        }
+      }).sort({ umidade: -1 });
+
+      const UmidadeMinima = await Leitura.findOne({
+        data: {
+          $gte: new Date(moment(date, "YYYY-MM-DD").format()).setHours(
+            0,
+            0,
+            0,
+            0
+          ),
+          $lt: new Date(moment(date, "YYYY-MM-DD").format()).setHours(
+            23,
+            59,
+            59,
+            99
+          )
+        }
+      }).sort({ umidade: 1 });
+
+      var response = {
+        TemperaturaMaxima,
+        TemperaturaMinima,
+        UmidadeMaxima,
+        UmidadeMinima
+      };
+
+      return res.status(200).json(response);
+    } catch (msg) {
+      console.log(msg);
+      return res.status(400).send(msg);
+    }
+  }
+
   //==================================================================================================
 }
 

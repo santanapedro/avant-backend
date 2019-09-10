@@ -20,5 +20,6 @@ routesAuth.get("/chuvadia", DashboardController.ChuvaDia);
 routesAuth.get("/chuvahora/:datachuva", DashboardController.ChuvaHora);
 routesAuth.get("/graficosemana", DashboardController.GraficoSemana);
 routesAuth.get("/graficohora/:data", DashboardController.GraficoHora);
+routesAuth.get("/maximasdia/:data", DashboardController.maximasDia);
 
 module.exports = routesAuth;
