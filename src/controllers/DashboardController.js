@@ -586,6 +586,8 @@ class DashboardController {
     }
   }
 
+  //================================================================================================
+
   async maximasDia(req, res) {
     try {
       const date = req.params.data;
@@ -673,6 +675,133 @@ class DashboardController {
   }
 
   //==================================================================================================
+
+  async maximasHora(req, res) {
+    var data = req.params.data;
+    var leitura;
+
+    try {
+      var labels = [
+        "00",
+        "02",
+        "04",
+        "06",
+        "08",
+        "10",
+        "12",
+        "14",
+        "16",
+        "18",
+        "20",
+        "22"
+      ];
+
+      var datasets = [
+        {
+          label: "TEMP MAXIMA",
+          data: [],
+          backgroundColor: "rgba(245, 74, 85, 0.0)",
+          borderColor: "rgba(245, 74, 85,1)",
+          borderCapStyle: "butt",
+          borderDash: [],
+          borderDashOffset: 0.0,
+          borderJoinStyle: "miter",
+          pointBorderColor: "rgba(245, 74, 85,1)",
+          pointBackgroundColor: "#fff",
+          pointBorderWidth: 3,
+          pointHoverRadius: 5,
+          pointHoverBackgroundColor: "rgba(245, 74, 85,1)",
+          pointHoverBorderColor: "rgba(220,220,220,1)",
+          pointHoverBorderWidth: 2,
+          pointRadius: 1,
+          pointHitRadius: 10,
+          borderWidth: 3
+        },
+
+        {
+          label: "UMID MAXIMA",
+          data: [],
+          backgroundColor: "rgba(245, 74, 85, 0.0)",
+          borderColor: "rgba(90, 173, 246, 1)",
+          borderCapStyle: "butt",
+          borderDash: [],
+          borderDashOffset: 0.0,
+          borderJoinStyle: "miter",
+          pointBorderColor: "rgba(90, 173, 246, 1)",
+          pointBackgroundColor: "#fff",
+          pointBorderWidth: 3,
+          pointHoverRadius: 5,
+          pointHoverBackgroundColor: "rgba(90, 173, 246, 1)",
+          pointHoverBorderColor: "rgba(220,220,220,1)",
+          pointHoverBorderWidth: 2,
+          pointRadius: 1,
+          pointHitRadius: 10,
+          borderWidth: 3
+        }
+      ];
+
+      for (let i = 0; i < 24; i++) {
+        if (i < 10) {
+          leitura = await Leitura.findOne({
+            data: {
+              $gte: moment(data).format(`YYYY-MM-DDT0${i}:00:00.000-04:00`),
+              $lte: moment(data).format(`YYYY-MM-DDT0${i + 1}:59:59.000-04:00`)
+            }
+          }).sort({ temperatura: -1 });
+        } else {
+          leitura = await Leitura.findOne({
+            data: {
+              $gte: moment(data).format(`YYYY-MM-DDT${i}:00:00.000-04:00`),
+              $lte: moment(data).format(`YYYY-MM-DDT${i + 1}:59:59.000-04:00`)
+            }
+          }).sort({ temperatura: -1 });
+        }
+
+        if (leitura) {
+          datasets[0].data.push(parseFloat(leitura.temperatura).toFixed(2));
+        } else {
+          datasets[0].data.push(0);
+        }
+
+        i = i + 1;
+      }
+
+      // ========================================  UMIDADE MAXIMA ===========================================
+
+      for (let i = 0; i < 24; i++) {
+        if (i < 10) {
+          leitura = await Leitura.findOne({
+            data: {
+              $gte: moment(data).format(`YYYY-MM-DDT0${i}:00:00.000-04:00`),
+              $lte: moment(data).format(`YYYY-MM-DDT0${i + 1}:59:59.000-04:00`)
+            }
+          }).sort({ umidade: -1 });
+        } else {
+          leitura = await Leitura.findOne({
+            data: {
+              $gte: moment(data).format(`YYYY-MM-DDT${i}:00:00.000-04:00`),
+              $lte: moment(data).format(`YYYY-MM-DDT${i + 1}:59:59.000-04:00`)
+            }
+          }).sort({ umidade: -1 });
+        }
+
+        if (leitura) {
+          datasets[1].data.push(parseFloat(leitura.umidade).toFixed(2));
+        } else {
+          datasets[1].data.push(0);
+        }
+
+        i = i + 1;
+      }
+
+      var dataBar = { labels, datasets };
+
+      return res.status(200).json(dataBar);
+    } catch (err) {
+      console.log(err);
+      return res.send(err);
+    }
+  }
 }
 
 module.exports = new DashboardController();
