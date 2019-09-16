@@ -262,6 +262,17 @@ class UsuarioController {
 
   //==========================================================================================================
 
+  async gravaId(req, res) {
+    try {
+      await Usuario.findByIdAndUpdate(req.body.id, { codigo: req.body.codigo });
+      res.status(200).send({ msg: "Usuario atualizado com sucesso!" });
+    } catch (msg) {
+      res.status(400).send({ msg });
+    }
+  }
+
+  //==========================================================================================================
+
   async delete(req, res) {
     try {
       await Usuario.findByIdAndDelete(req.params.id, { $set: req.body });

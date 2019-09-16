@@ -14,6 +14,8 @@ routesAuth.put("/usuario/:id", UsuarioController.update);
 routesAuth.delete("/usuario/:id", UsuarioController.delete);
 routesAuth.get("/usuario", UsuarioController.index);
 
+routesAuth.post("/gravaid", UsuarioController.gravaId);
+
 const DashboardController = require("./controllers/DashboardController");
 routesAuth.get("/buscaultimo", DashboardController.BuscaUltimo);
 routesAuth.get("/chuvadia", DashboardController.ChuvaDia);
