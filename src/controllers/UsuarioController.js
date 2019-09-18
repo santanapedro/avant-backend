@@ -109,6 +109,40 @@ class UsuarioController {
 
   //==========================================================================================================
 
+  async cancelaNotifica(req, res) {
+    try {
+      await Usuario.findById({ _id: req.params.id }, async function(
+        err,
+        userFromDB
+      ) {
+        if (userFromDB) {
+          const data = { notificacao: "N" };
+          const _id = userFromDB._id;
+
+          await Usuario.findByIdAndUpdate(_id, { $set: data });
+
+          return res.status(200)
+            .send(`<html><body><header><h1> <font color="#588c7e">AVANT TECNOLOGIA</font></h1></header>
+
+              <div class="w3-container">\
+              <p><strong>${userFromDB.nome}</strong>, agora você não irá mais receber nossos informativos.</p>\
+              </div>
+                </body> </html>`);
+        } else {
+          return res.status(201)
+            .send(`<html><body ><header color="#588c7e"><h1> <font color="#588c7e">AVANT TECNOLOGIA </font></h1></header>\
+          <div class="w3-container">\
+            <p>Usuario não encontrado!.</p>\
+          </div></body></html>`);
+        }
+      });
+    } catch (err) {
+      return res.status(201).send({ msg: err.errmsg });
+    }
+  }
+
+  //==========================================================================================================
+
   async enviaalteraSenha(req, res) {
     try {
       await Usuario.findOne({ email: req.body.email }, async function(

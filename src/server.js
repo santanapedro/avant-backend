@@ -1,9 +1,9 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-
+const moment = require("moment");
 const app = express();
-
+const notifica = require("./controllers/NotificacaoController");
 const server = require("http").Server(app);
 const io = require("socket.io")(server);
 
@@ -16,6 +16,21 @@ app.use((req, res, next) => {
   req.io = io;
   return next();
 });
+
+async function service() {
+  setTimeout(function() {
+    const hora = String(moment().format("hh:mm a"));
+    if (hora === "07:15 pm") {
+      notifica.diario();
+    }
+
+    console.log(moment().format("DD/MM/YYYY, hh:mm"));
+
+    service();
+  }, 60000);
+}
+
+service();
 
 app.use(cors());
 app.use(express.json());
