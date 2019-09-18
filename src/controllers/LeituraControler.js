@@ -30,7 +30,6 @@ class LeituraController {
         req.io.emit("erro", gravaLog);
         return res.status(200).send("ERRO ESTRUTURA");
       } else {
-        console.log(req.query.drvento);
         if (req.query.drvento >= 1000 && req.query.drvento <= 1200) {
           req.query.drvento = "N";
         } else if (req.query.drvento >= 150 && req.query.drvento <= 250) {
@@ -51,6 +50,8 @@ class LeituraController {
           const data = await Leitura.findOne().sort({ data: -1 });
           req.query.drvento = data.drvento;
         }
+
+        req.query.vlvento = req.query.vlvento / 2;
 
         await Leitura.create(req.query, function(err) {
           if (err) {
