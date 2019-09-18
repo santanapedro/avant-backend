@@ -18,6 +18,7 @@
     "mongoose-timezone": "^1.2.0",
     "nodemailer": "^6.3.0",
     "nodemon": "^1.18.11",
+    "onesignal-node": "^2.1.1",
     "socket.io": "^2.2.0"
   }
 }

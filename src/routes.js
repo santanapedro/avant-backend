@@ -16,8 +16,8 @@ routes.post("/senha/:id", UsuarioController.senha);
 
 //=========================================================================================
 
-//const DispositivoController = require("./controllers/DispositivoController");
-//routes.post("/cadastradispositivo", DispositivoController.store);
+const NotificacaoController = require("./controllers/NotificacaoController");
+routes.get("/notifica", NotificacaoController.notificaTodos);
 
 //=========================================================================================
 

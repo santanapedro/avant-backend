@@ -28,7 +28,7 @@ module.exports = {
     usuario.senha = undefined;
 
     const token = jwt.sign({ id: usuario.id }, authConfig.secret, {
-      expiresIn: 86400
+      expiresIn: 9999999
     });
 
     return res.send({ usuario, token });
