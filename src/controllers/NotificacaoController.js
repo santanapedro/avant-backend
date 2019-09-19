@@ -113,29 +113,31 @@ class NotificacoController {
             <div class="w3-container">
               <p>Boa noite <strong>${
                 usuarios[i].nome
-              }</strong>, este boletim contem algumas informações coletadas pela nossa estação no dia de hoje:</p>
+              }</strong>, este boletim contem algumas informações coletadas pela nossa estação no dia de hoje (${moment().format(
+              "DD/MM/YYYY"
+            )}):</p>
               <ul>
                  <p><strong> <font color="#B22222">TEMPERATURA</font></strong></p>
-                <li>Maxima: ${parseFloat(TemperaturaMaxima.temperatura).toFixed(
-                  2
-                )} °C as ${moment(TemperaturaMaxima.data).format(
-              "DD/MM/YYYY HH:mm:ss"
-            )}</li>
-                <li>Minima: ${parseFloat(TemperaturaMinima.temperatura).toFixed(
-                  2
-                )} °C as ${moment(TemperaturaMinima.data).format(
-              "DD/MM/YYYY HH:mm:ss"
-            )}</li>
+                <li>Maxima:<strong> ${parseFloat(
+                  TemperaturaMaxima.temperatura
+                ).toFixed(2)}</strong> °C as ${moment(
+              TemperaturaMaxima.data
+            ).format("HH:mm:ss")}</li>
+                <li>Minima:<strong> ${parseFloat(
+                  TemperaturaMinima.temperatura
+                ).toFixed(2)}</strong> °C as ${moment(
+              TemperaturaMinima.data
+            ).format("HH:mm:ss")}</li>
                 <p><strong><font color="#4682B4">UMIDADE</font></strong></p>
-                <li>Maxima: ${parseFloat(UmidadeMaxima.umidade).toFixed(
+                <li>Maxima:<strong> ${parseFloat(UmidadeMaxima.umidade).toFixed(
                   2
-                )}% as ${moment(UmidadeMaxima.data).format(
-              "DD/MM/YYYY HH:mm:ss"
+                )}</strong>% as ${moment(UmidadeMaxima.data).format(
+              "HH:mm:ss"
             )}</li>
-                <li>Minima: ${parseFloat(UmidadeMinima.umidade).toFixed(
+                <li>Minima:<strong> ${parseFloat(UmidadeMinima.umidade).toFixed(
                   2
-                )}% as ${moment(UmidadeMinima.data).format(
-              "DD/MM/YYYY HH:mm:ss"
+                )}</strong>% as ${moment(UmidadeMinima.data).format(
+              "HH:mm:ss"
             )}</li>
                 <p><strong><font color="#191970">CHUVA</font></strong></p>
                 <li>Quantidade: ${chuva.length * 0.25}mm</li>
