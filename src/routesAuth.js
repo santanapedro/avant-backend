@@ -20,7 +20,7 @@ const DashboardController = require("./controllers/DashboardController");
 routesAuth.get("/buscaultimo", DashboardController.BuscaUltimo);
 routesAuth.get("/chuvadia", DashboardController.ChuvaDia);
 routesAuth.get("/chuvahora/:datachuva", DashboardController.ChuvaHora);
-routesAuth.get("/graficosemana", DashboardController.GraficoSemana);
+routesAuth.get("/graficosemana/:data", DashboardController.GraficoSemana);
 routesAuth.get("/graficohora/:data", DashboardController.GraficoHora);
 routesAuth.get("/maximasdia/:data", DashboardController.maximasDia);
 routesAuth.get("/maximashora/:data", DashboardController.maximasHora);

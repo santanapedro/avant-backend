@@ -67,36 +67,76 @@ class NotificacoController {
     try {
       const TemperaturaMaxima = await Leitura.findOne({
         data: {
-          $gte: new Date(moment().format()).setHours(0, 0, 0, 0),
-          $lt: new Date(moment().format()).setHours(23, 59, 59, 99)
+          $gte: new Date(
+            moment()
+              .subtract(1, "days")
+              .format()
+          ).setHours(0, 0, 0, 0),
+          $lt: new Date(
+            moment()
+              .subtract(1, "days")
+              .format()
+          ).setHours(23, 59, 59, 99)
         }
       }).sort({ temperatura: -1 });
 
       const TemperaturaMinima = await Leitura.findOne({
         data: {
-          $gte: new Date(moment().format()).setHours(0, 0, 0, 0),
-          $lt: new Date(moment().format()).setHours(23, 59, 59, 99)
+          $gte: new Date(
+            moment()
+              .subtract(1, "days")
+              .format()
+          ).setHours(0, 0, 0, 0),
+          $lt: new Date(
+            moment()
+              .subtract(1, "days")
+              .format()
+          ).setHours(23, 59, 59, 99)
         }
       }).sort({ temperatura: 1 });
 
       const UmidadeMaxima = await Leitura.findOne({
         data: {
-          $gte: new Date(moment().format()).setHours(0, 0, 0, 0),
-          $lt: new Date(moment().format()).setHours(23, 59, 59, 99)
+          $gte: new Date(
+            moment()
+              .subtract(1, "days")
+              .format()
+          ).setHours(0, 0, 0, 0),
+          $lt: new Date(
+            moment()
+              .subtract(1, "days")
+              .format()
+          ).setHours(23, 59, 59, 99)
         }
       }).sort({ umidade: -1 });
 
       const UmidadeMinima = await Leitura.findOne({
         data: {
-          $gte: new Date(moment().format()).setHours(0, 0, 0, 0),
-          $lt: new Date(moment().format()).setHours(23, 59, 59, 99)
+          $gte: new Date(
+            moment()
+              .subtract(1, "days")
+              .format()
+          ).setHours(0, 0, 0, 0),
+          $lt: new Date(
+            moment()
+              .subtract(1, "days")
+              .format()
+          ).setHours(23, 59, 59, 99)
         }
       }).sort({ umidade: 1 });
 
       const chuva = await Chuva.find({
         data: {
-          $gte: new Date().setHours(0, 0, 0, 0),
-          $lt: new Date().setHours(23, 59, 59, 99)
+          $gte: new Date(
+            moment()
+              .subtract(1, "days")
+              .format()
+          ).setHours(0, 0, 0, 0),
+          $lt: new Date(
+            moment()
+              .subtract(1, "days")
+              .format()
+          ).setHours(23, 59, 59, 99)
         }
       });
 
@@ -111,11 +151,11 @@ class NotificacoController {
             subject: "Informativo Diario",
             html: `</html><body><header><h1> <font color="#588c7e">AVANT TECNOLOGIA </font></h1></header>
             <div class="w3-container">
-              <p>Boa noite <strong>${
+              <p>Bom dia <strong>${
                 usuarios[i].nome
-              }</strong>, este boletim contem algumas informações coletadas pela nossa estação no dia de hoje (${moment().format(
-              "DD/MM/YYYY"
-            )}):</p>
+              }</strong>, este boletim contem algumas informações coletadas pela nossa estação no dia de ontem (${moment()
+              .subtract(1, "days")
+              .format("DD/MM/YYYY")}):</p>
               <ul>
                  <p><strong> <font color="#B22222">TEMPERATURA</font></strong></p>
                 <li>Maxima:<strong> ${parseFloat(
@@ -156,7 +196,12 @@ class NotificacoController {
             if (error) {
               console.log(error);
             } else {
-              console.log("Email enviado: " + info.response);
+              console.log(
+                "Email enviado para: " +
+                  usuarios[i].email +
+                  " - " +
+                  info.response
+              );
             }
           });
         }

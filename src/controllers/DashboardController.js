@@ -208,7 +208,8 @@ class DashboardController {
 
   async GraficoSemana(req, res) {
     var labels = [];
-
+    console.log(new Date(req.params.data));
+    var dataBusca = new Date(req.params.data);
     var datasets = [
       {
         label: "TEMP MAXIMA",
@@ -238,7 +239,11 @@ class DashboardController {
 
     try {
       for (var i = 1; i <= 7; i++) {
-        var dia = new Date(moment().subtract(i, "days"));
+        var dia = new Date(
+          moment(dataBusca)
+            .subtract(i, "days")
+            .format()
+        );
 
         labels.push(
           moment(dia)

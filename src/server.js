@@ -20,7 +20,7 @@ app.use((req, res, next) => {
 async function service() {
   setTimeout(function() {
     const hora = String(moment().format("hh:mm a"));
-    if (hora === "07:15 pm") {
+    if (hora === "08:55 am") {
       notifica.diario();
     }
 
